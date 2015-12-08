@@ -2,4 +2,11 @@
 # (c) 2015 Christopher H. Eliot (@chreliot)
 #  This code is annotated, but see the README at https://github.com/chreliot/ethics-bowl-scoring
 
+library(dplyr)
+library(readr)
+
+ebtoy <- read_csv("EBToyData.csv")
+
+
+# arrange(df)
 
