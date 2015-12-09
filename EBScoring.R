@@ -37,7 +37,11 @@ rankedteams <- summarize(gbteams, wins = sum(wintieloss == "win"),
 
 # Count judge votes:
 
-votesbymatch <- melt(ebtoy, id.vars = c("round", "team")) %>%
+# create a new data frame here that is simpler than ebtoy
+
+votestemp <- select(ebtoy, round, team, judge1, judge2, judge3)
+
+votesbymatch <- melt(votestemp, id.vars = c("round", "team")) %>%
   group_by(group = rep(1:(nrow(.)/2), each = 2)) %>%
   arrange(desc(value)) %>%
   mutate(result = if(value[1] == value[2]){"ties"}else{
