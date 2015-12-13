@@ -10,9 +10,11 @@ This directory also includes a toy data .csv file for testing the script called 
 
 ## Data entry
 
-Data can be entered in any application that will export a `.csv` file, including Excel, Numbers, and any text-editor among others. It should then be exported to the same folder/directory this script is run from.
+Data can be entered in any application that will export a `.csv` (comma-separated value spreadsheet) file, including Excel, Numbers, and any text-editor among others. It should then be exported to the same folder/directory this script is run from.
 
-The script looks for a CSV file called `EBToyData.csv` in the same folder/directory, and imports that into memory. I will change this name (and will note that here) as I switch over from using toy data for testing the script to using actual Ethics Bowl data. To use the script with a `.csv` file that has a different name, just find and replace "EBToyData" in the script with the name of your `.csv` (comma-separated value spreadsheet) file.
+The script looks for a CSV file called `EBToyData.csv` in the same folder/directory, and imports that into memory. I will change this name (and will note that here) as I switch over from using toy data for testing the script to using actual Ethics Bowl data. The toy data file `EBToyData.csv` is in this repository. 
+
+To use the script with a `.csv` file that has a different name, find and replace "EBToyData" in the script with the name of your `.csv`  file. The toy data file `EBToyData.csv` is in this repository.
 
 The input `.csv` file should be formatted like this:
 
