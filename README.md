@@ -6,8 +6,6 @@ The ranking script is complete, functional, and commented, however I may add som
 
 The sections below explain how to get data into place for the script to use it, and then briefly what the script does.
 
-This directory also includes a toy data `.csv` file for testing the script called `EBToyData.csv`.
-
 ## Prerequisites
 
 [R](https://www.r-project.org) must be installed, and it's presumed you know how to run it, either from the command line, or from its GUI app, or inside a development environment like [RStudio](https://www.rstudio.com/products/rstudio/).
