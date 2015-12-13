@@ -50,3 +50,26 @@ The script calculates rankings according to number of wins and then according to
  6. coin toss
  
 The script simulates a coin-toss (which is unlikely to be required in scoring) by generating a random number between 0 and 1 for each team, and then ranking the team with the higher number higher. Or at least, it uses the random numbers to rank two teams if and only if their scores are completely tied after all factors up through highest total-points are considered.
+
+## Results and output
+
+The script:
+
+ 1. puts the results in an R object called `finalresults`
+ 2. prints `finalresults` to the local viewer
+ 3. writes `finalresults` to a `.csv` file to the local directory called `EBResults.csv`. This file, `EBResults.csv`, can be opened in any spreadsheet application or text editor.
+ 
+For the toy data in `EBToyData.csv`, the script outputs the following results:
+ 
+|  | team     | wins | losses | judgevotes | ptdiff | bowltotal | random                   |
+|------|----------|--------|------------|--------|-----------|--------|--------------------|
+| 1    | maple    | 3      | 0          | 9      | 50        | 493    | 0.225436616456136  |
+| 2    | walnut   | 2      | 1          | 6      | 10        | 431    | 0.429671525489539  |
+| 3    | dogwood  | 2      | 1          | 5      | 20        | 471    | 0.426907666493207  |
+| 4    | spruce   | 2      | 1          | 5      | 10        | 347    | 0.615829307818785  |
+| 5    | chestnut | 1      | 0          | 5      | 8         | 408    | 0.306768506066874  |
+| 6    | elm      | 1      | 1          | 3      | -10       | 482    | 0.693102080840617  |
+| 7    | oak      | 1      | 2          | 2      | -17       | 446    | 0.274530522990972  |
+| 8    | holly    | 0      | 2          | 2      | 2         | 414    | 0.0851359688676894 |
+| 9    | cedar    | 0      | 2          | 2      | -21       | 444    | 0.507478203158826  |
+| 10   | poplar   | 0      | 2          | 0      | -52       | 366    | 0.272305066231638  | 

@@ -130,4 +130,14 @@ rankedteams <- mutate(rankedteams, random = runif(length(rankedteams$team), 0, 1
 # 4. highest point-differential
 # 5. highest total-points
 # 6. coin toss (simulated by random numbers)
-arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
+finalresults <- arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
+
+
+# OUTPUT
+--------
+
+# print object finalresults to dataviewer
+View(finalresults)
+  
+# write results / ranked team list to csv file in the same directory  
+write.csv(finalresults, file = "EBResults.csv")
