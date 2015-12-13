@@ -14,7 +14,7 @@ The following R packages must be installed/available: `dplyr`, `readr`, `reshape
 
 ## Data entry
 
-Scores for individual rounds can be entered in any application that will export a `.csv` (comma-separated value spreadsheet) file, including Excel, Numbers, and any text-editor among others. It should then be exported to the same folder/directory this script is run from.
+Scores for individual rounds can be entered in any application that will export a `.csv` (comma-separated value spreadsheet) file, including Excel, Numbers, and any text-editor among others. Save the `.csv` file to the same folder/directory you're running this script in.
 
 The script looks for a CSV file called `EBToyData.csv` in the same folder/directory, and imports that into memory. I will change this name (and will note that here) as I switch over from using toy data for testing the script to using actual Ethics Bowl data. The toy data file `EBToyData.csv` is also in this repository. It depicts 10 teams participating in three rounds each, competing against a different team in each round.
 
