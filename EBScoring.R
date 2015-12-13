@@ -10,6 +10,7 @@ library(reshape2)
 
 # Import csv version of score sheet
 ebtoy <- read_csv("EBToyData.csv")
+
 # Ensure that names don't have 
 names(ebtoy) <- make.names(names(ebtoy))
 
@@ -18,46 +19,52 @@ names(ebtoy) <- make.names(names(ebtoy))
 # DATA-QUALITY/SANITY CHECKS
 # --------------------------
 
+# TODO: add data-quality checks
 
+# sapply(ebtoy[4:6], function(x) if(x>60){print("Warning: score over 60")}else{print("Fine: data range")})
 
 # CALCULATE RANKING CRITERIA
 # --------------------------
 
-# sapply(ebtoy[4:6], function(x) if(x>60){print("Warning: score over 60")}else{print("Fine: data range")})
+# Calculate wins, losses (for first criterion and tie-breaker 1):
+# --------------------------------------------------------------
 
-# Count wins and losses:
+# We currently skip counting wins and losses and rely on the 
+# manually-entered winlosstie column. That is, we go with the moderators' decisions.
 
 # group the original dataframe by teams
 gbteams <- group_by(ebtoy, team)
 # create a data frame that's a count of wins for each team
 rankedteams <- summarize(gbteams, wins = sum(wintieloss == "win"), 
                          losses = sum(wintieloss == "loss"))
-# so rankedteams is now a dataframe with win counts but isn't ranked until RANKING FUNCTION
+
+# rankedteams is now a dataframe with win counts but 
+# the ranking isn't performed until the RANKING FUNCTION section below
 
 
-# Count judge votes:
-#-------------------
+# Count judge votes (tie-breaker 2):
+#----------------------------------
 
 # create a new data frame with just round, team, and 3 judge scores
-
 votestemp <- select(ebtoy, round, team, judge1, judge2, judge3)
 
-# for each match, caluclate a vote, lose, or tie outcome for each judge/team pair
-
+# for each match, calculate a vote, lose, or tie outcome for each judge/team pair
 votesbymatch <- melt(votestemp, id.vars = c("round", "team")) %>%
   group_by(group = rep(1:(nrow(.)/2), each = 2)) %>%
   arrange(desc(value)) %>%
   mutate(result = if(value[1] == value[2]){"ties"}else{
     c("vote", "lose")
   })
+
+# Summarize the count of judge votes by team instead of by match
 votesbyteam <- group_by(votesbymatch, team)
 votesbyteam <- summarize(votesbyteam, votes = sum(result == "vote"))
 
 # add a new column to rankedteams: judgevotes (vote, tie, lose)
 rankedteams <- mutate(rankedteams, judgevotes = votesbyteam$votes)
 
-# Compute total point differential over all matches:
-#--------------------------------------------------
+# Compute total point differential over all matches (tie-breaker 3):
+# -----------------------------------------------------------------
 
 # create a new data frame from ebtoy with just round, team, and 3 judge scores
 pointdifftemp <- select(ebtoy, round, team, judge1, judge2, judge3)
@@ -68,7 +75,7 @@ pointdifftemp <- mutate(pointdifftemp, totalpoints = (judge1 + judge2 + judge3))
 # select just round and team ID variables and total points data into a new object
 matchtotals <- select(pointdifftemp, round, team, totalpoints)
 
-pointdiffsbymatch <- group_by(pointdifftemp, round) %>% 
+pointdiffsbymatch <- group_by(matchtotals, round) %>% 
   mutate(roundpoints = sum(totalpoints)) %>%
   mutate(pointdiff = (totalpoints-(roundpoints-totalpoints)))
 
@@ -78,54 +85,44 @@ pointdiffsbyteam <- summarize(pointdiffsbyteam, totalpointdiff = sum(pointdiff))
 # add a new column to rankedteams: judgevotes (vote, tie, lose)
 rankedteams <- mutate(rankedteams, ptdiff = pointdiffsbyteam$totalpointdiff)
 
-# pointdiffsbymatch <- melt(matchtotals, id.vars = c("round", "team")) %>%
-#   group_by(group = rep(1:(nrow(.)/2), each = 2)) %>%
-#   arrange(desc(value)) %>%
-#   mutate(pointdiff = if(value[1] == value[2]){0}else{
-#   c(value[1] - value[2], value[2] - value[1])
-# })
-# pointdiffsbyteam <- group_by(pointdiffsbymatch, team)
-# pointdiffsbyteam <- summarize(pointdiffsbyteam, totalpointdiff = sum(pointdiff))
-# pointdiffsbyteam
 
-# I just removed:   arrange(desc(value)) %>%
+# Count total points again (tie-breaker 4):
+# --------------------------------------------
 
-# Coin toss?
+# # create a new data frame from ebtoy with just round, team, and 3 judge scores
+# totalpointstemp <- select(ebtoy, round, team, judge1, judge2, judge3)
+# 
+# # calculate a totalpoints column summing judges' scores for each team-performance
+# totalpointstemp <- mutate(totalpointstemp, totalpoints = (judge1 + judge2 + judge3))
+# 
+# # select just round and team ID variables and total points data into a new object
+# matchtotals <- select(pointdifftemp, round, team, totalpoints)
 
+# Use the matchtotals object again from point-diff section
 
+totalsbyteam <- group_by(matchtotals, team)
 
+bowltotalsbyteam <- summarize(totalsbyteam, bowlpoints = sum(totalpoints))
 
-
-# rankedbyvotes <- summarize()
-
-# go back to the ebtoy data frame and count votes (2), novotes (1), ties (1.5)
-# pending further instructions, I'm only going to count the votes (the 2s)
-# in columns 4:6, which are the three judges' scores for each round
-
-#votecount <- sapply(ebtoy[4:6], function(x) ave(x, gbrounds[1], FUN=rank))
-#votecount <- as.data.frame(votecount)
+# add a new column to rankedteams: bowltotal (between 0, 720 for four rounds)
+rankedteams <- mutate(rankedteams, bowltotal = bowltotalsbyteam$bowlpoints)
 
 
+# Simulate a coin-toss by comparing random numbers between 0,1 (tie-breaker 5):
+# ----------------------------------------------------------------------------
 
-# votecountlong <- melt(votecount)
-
-#mutate(votecount, roundvotes = sum(function(x) (x==2)))
-# rename(votecount, judge1votes = judge1, judge2votes = judge2, judge3votes = judge3)
-
-# sapply(votecount, function(x) sum(x==2, na.rm=TRUE))
-# mutate(votecount, roundvotes = sapply(value, function(x) sum(x==2, na.rm=TRUE)))
-
-# mutate(votecount, roundvotes = sum(votecount=="2", na.rm=TRUE))  
-
-# The problem with the previous line is that it sums ALL of the 2's in the df
-# and so it returns 39 on every row.
-
-# votecount$roundvotes <- rowSums(votecount == "2")
-
+set.seed(length(rankedteams$team))
+rankedteams <- mutate(rankedteams, random = runif(length(rankedteams$team), 0, 1))
 
 # RANKING FUNCTION
 # ----------------
 
-# an incomplete arrange task that arranges so far only by wins and losses
-arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff))
+# Rank teams by:
+# 1. most wins
+# 2. fewest losses
+# 3. most judge-votes
+# 4. highest point-differential
+# 5. highest total-points
+# 6. coin toss (simulated by random numbers)
+arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
 
