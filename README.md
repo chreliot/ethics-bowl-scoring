@@ -4,9 +4,9 @@ This is an R script for computing scores for Ethics Bowls, created for the 7th A
 
 The ranking script is complete, functional, and commented. I may add some data-quality checks to it, so that it will produce an error message if, for instance, any spreadsheet cell is blank. But it now works for scoring.
 
-The sections below explain how to get data into the script, and then briefly how it works.
+The sections below explain how to get data into place for the script to use it, and then briefly how it works.
 
-This directory also includes a toy data .csv file for testing the script called `EBToyData.csv.`
+This directory also includes a toy data `.csv` file for testing the script called `EBToyData.csv`.
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ Data can be entered in any application that will export a `.csv` (comma-separate
 
 The script looks for a CSV file called `EBToyData.csv` in the same folder/directory, and imports that into memory. I will change this name (and will note that here) as I switch over from using toy data for testing the script to using actual Ethics Bowl data. The toy data file `EBToyData.csv` is in this repository. 
 
-To use the script with a `.csv` file that has a different name, find and replace "EBToyData" in the script with the name of your `.csv`  file. The toy data file `EBToyData.csv` is in this repository.
+To use the script with a `.csv` file that has a different name, find and replace "EBToyData" in the script with the name of your `.csv`  file.
 
 The input `.csv` file should be formatted like this:
 
@@ -35,8 +35,8 @@ The input `.csv` file should be formatted like this:
  * **team** lists unique team names, which must be consistent, and shouldn't include punctuation, to be safe;
  * **wintieloss** takes one of the three values "win," "tie," or "loss." It lists the round-moderator's assessment of which team won. Though it is also possible to calculate the winner from the numbers, the script counts wins and losses from this manually-entered column.
  * **judge1**, **judge2**, and **judge3** take values between 0 and 60, each representing the total scores given by each judge to a particular team at the end of the round.
-
-The script should be able to handle any number of rounds of competition between pairs of teams.
+ 
+The script should be able to handle any number of rounds of competition between pairs of teams. Cells should not be left blank.
 
 ## Scoring
 
