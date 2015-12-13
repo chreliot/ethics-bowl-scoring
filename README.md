@@ -8,6 +8,12 @@ The sections below explain how to get data into the script, and then briefly how
 
 This directory also includes a toy data .csv file for testing the script called `EBToyData.csv.`
 
+## Prerequisites
+
+[R](https://www.r-project.org) must be installed, and it's presumed you know how to run it, either from the command line, or from its GUI app, or in a development environment like [RStudio](https://www.rstudio.com/products/rstudio/).
+
+The following R packages must be installed/available: `dplyr`, `readr`, `reshape2`.
+
 ## Data entry
 
 Data can be entered in any application that will export a `.csv` (comma-separated value spreadsheet) file, including Excel, Numbers, and any text-editor among others. It should then be exported to the same folder/directory this script is run from.
