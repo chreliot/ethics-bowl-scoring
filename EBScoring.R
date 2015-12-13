@@ -2,17 +2,23 @@
 # (c) 2015 Christopher H. Eliot (@chreliot)
 #  This code is commented, but see the README at https://github.com/chreliot/ethics-bowl-scoring
 
+# LOAD REQUIRED PACKAGES
+# ----------------------
+
 library(dplyr)
 library(readr)
 library(reshape2)
-# IMPORT
-# ------
+
+# IMPORT SPREADSHEET
+# ------------------
 
 # Import csv version of score sheet
 ebtoy <- read_csv("EBToyData.csv")
 
-# Ensure that names don't have 
+# Ensure that names don't have lower-case
 names(ebtoy) <- make.names(names(ebtoy))
+
+# TODO: check why this is make.names rather than e.g. make.lower
 
 # Note: sum(ebtoy$wintieloss == "win")  returns 12, the number of wins overall
 
@@ -125,4 +131,3 @@ rankedteams <- mutate(rankedteams, random = runif(length(rankedteams$team), 0, 1
 # 5. highest total-points
 # 6. coin toss (simulated by random numbers)
 arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
-
