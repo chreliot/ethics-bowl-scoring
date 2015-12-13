@@ -44,7 +44,7 @@ The script calculates rankings according to number of wins and then according to
  2. fewest losses
  3. most judge-votes
  4. highest point-differential
- 5. highest total-points
+ 5. highest total points
  6. coin toss
  
 The script simulates a coin-toss (which is unlikely to be required in scoring) by generating a random number between 0 and 1 for each team, and then ranking the team with the higher number higher.

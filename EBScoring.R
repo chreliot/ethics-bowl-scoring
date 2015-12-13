@@ -2,6 +2,7 @@
 # (c) 2015 Christopher H. Eliot (@chreliot)
 #  This code is commented, but see the README at https://github.com/chreliot/ethics-bowl-scoring
 
+
 # LOAD REQUIRED PACKAGES
 # ----------------------
 
@@ -15,12 +16,13 @@ library(reshape2)
 # Import csv version of score sheet
 ebtoy <- read_csv("EBToyData.csv")
 
-# Ensure that names don't have lower-case
+# Ensure that names are lower-case
 names(ebtoy) <- make.names(names(ebtoy))
 
-# TODO: check why this is make.names rather than e.g. make.lower
+# TODO: check why I used make.names rather than e.g. make.lower
 
 # Note: sum(ebtoy$wintieloss == "win")  returns 12, the number of wins overall
+
 
 # DATA-QUALITY/SANITY CHECKS
 # --------------------------
@@ -29,6 +31,7 @@ names(ebtoy) <- make.names(names(ebtoy))
 
 # sapply(ebtoy[4:6], function(x) if(x>60){print("Warning: score over 60")}else{print("Fine: data range")})
 
+
 # CALCULATE RANKING CRITERIA
 # --------------------------
 
@@ -36,15 +39,17 @@ names(ebtoy) <- make.names(names(ebtoy))
 # --------------------------------------------------------------
 
 # We currently skip counting wins and losses and rely on the 
-# manually-entered winlosstie column. That is, we go with the moderators' decisions.
+# manually-entered "winlosstie" column. That is, we go with the 
+# moderators' decisions.
 
 # group the original dataframe by teams
 gbteams <- group_by(ebtoy, team)
+
 # create a data frame that's a count of wins for each team
 rankedteams <- summarize(gbteams, wins = sum(wintieloss == "win"), 
                          losses = sum(wintieloss == "loss"))
 
-# rankedteams is now a dataframe with win counts but 
+# "rankedteams" is the dataframe we will use for the overall ranking, but
 # the ranking isn't performed until the RANKING FUNCTION section below
 
 
@@ -69,6 +74,7 @@ votesbyteam <- summarize(votesbyteam, votes = sum(result == "vote"))
 # add a new column to rankedteams: judgevotes (vote, tie, lose)
 rankedteams <- mutate(rankedteams, judgevotes = votesbyteam$votes)
 
+
 # Compute total point differential over all matches (tie-breaker 3):
 # -----------------------------------------------------------------
 
@@ -81,10 +87,12 @@ pointdifftemp <- mutate(pointdifftemp, totalpoints = (judge1 + judge2 + judge3))
 # select just round and team ID variables and total points data into a new object
 matchtotals <- select(pointdifftemp, round, team, totalpoints)
 
+# for each match, calculate point-differential from the total points each team earns
 pointdiffsbymatch <- group_by(matchtotals, round) %>% 
   mutate(roundpoints = sum(totalpoints)) %>%
   mutate(pointdiff = (totalpoints-(roundpoints-totalpoints)))
 
+# Summarize the point-differentials by team instead of by match
 pointdiffsbyteam <- group_by(pointdiffsbymatch, team)
 pointdiffsbyteam <- summarize(pointdiffsbyteam, totalpointdiff = sum(pointdiff))
 
@@ -95,17 +103,7 @@ rankedteams <- mutate(rankedteams, ptdiff = pointdiffsbyteam$totalpointdiff)
 # Count total points again (tie-breaker 4):
 # --------------------------------------------
 
-# # create a new data frame from ebtoy with just round, team, and 3 judge scores
-# totalpointstemp <- select(ebtoy, round, team, judge1, judge2, judge3)
-# 
-# # calculate a totalpoints column summing judges' scores for each team-performance
-# totalpointstemp <- mutate(totalpointstemp, totalpoints = (judge1 + judge2 + judge3))
-# 
-# # select just round and team ID variables and total points data into a new object
-# matchtotals <- select(pointdifftemp, round, team, totalpoints)
-
 # Use the matchtotals object again from point-diff section
-
 totalsbyteam <- group_by(matchtotals, team)
 
 bowltotalsbyteam <- summarize(totalsbyteam, bowlpoints = sum(totalpoints))
@@ -117,7 +115,10 @@ rankedteams <- mutate(rankedteams, bowltotal = bowltotalsbyteam$bowlpoints)
 # Simulate a coin-toss by comparing random numbers between 0,1 (tie-breaker 5):
 # ----------------------------------------------------------------------------
 
+# use set.seed to make the random numbers reproducible after we generate them
 set.seed(length(rankedteams$team))
+
+# generate a random number for each team and add it as a column to "rankedteams"
 rankedteams <- mutate(rankedteams, random = runif(length(rankedteams$team), 0, 1))
 
 # RANKING FUNCTION
@@ -132,6 +133,7 @@ rankedteams <- mutate(rankedteams, random = runif(length(rankedteams$team), 0, 1
 # 6. coin toss (simulated by random numbers)
 finalresults <- arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
 
+# and we've now put the final team rankings into the object "finalresults"
 
 # OUTPUT
 --------
@@ -139,5 +141,5 @@ finalresults <- arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(
 # print object finalresults to dataviewer
 View(finalresults)
   
-# write results / ranked team list to csv file in the same directory  
+# then also write final results to csv file in the same directory  
 write.csv(finalresults, file = "EBResults.csv")
