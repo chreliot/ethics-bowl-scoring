@@ -21,14 +21,12 @@ names(ebtoy) <- make.names(names(ebtoy))
 
 # TODO: check why I used make.names rather than e.g. make.lower
 
-# Note: sum(ebtoy$wintieloss == "win")  returns 12, the number of wins overall
-
-
 # DATA-QUALITY/SANITY CHECKS
 # --------------------------
 
 # TODO: add data-quality checks
 
+# Check whether any score is greater than 60:
 # sapply(ebtoy[4:6], function(x) if(x>60){print("Warning: score over 60")}else{print("Fine: data range")})
 
 
@@ -138,8 +136,11 @@ finalresults <- arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(
 # OUTPUT
 --------
 
+# print results to console in case the dataviewer isn't configured
+arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
+
 # print object finalresults to dataviewer
 View(finalresults)
-  
+
 # then also write final results to csv file in the same directory  
 write.csv(finalresults, file = "EBResults.csv")
