@@ -136,8 +136,8 @@ finalresults <- arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(
 # OUTPUT
 --------
 
-# print results to console in case the dataviewer isn't configured
-arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
+# we could print results to console in case the dataviewer isn't configured?
+# arrange(rankedteams, desc(wins), losses, desc(judgevotes), desc(ptdiff), desc(bowltotal), desc(random))
 
 # print object finalresults to dataviewer
 View(finalresults)
