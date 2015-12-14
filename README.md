@@ -68,6 +68,6 @@ For the matches in `EBToyData.csv`, the script outputs the following results. Te
 | 5    | chestnut | 1      | 0          | 5      | 8         | 408    | 0.30676  |
 | 6    | elm      | 1      | 1          | 3      | -10       | 482    | 0.69310  |
 | 7    | oak      | 1      | 2          | 2      | -17       | 446    | 0.27453  |
-| 8    | holly    | 0      | 2          | 2      | 2         | 414    | 0.08513  |
-| 9    | cedar    | 0      | 2          | 2      | -21       | 444    | 0.50747  |
+| 8    | holly    | 0      | 2          | 2      | 3         | 415    | 0.08513  |
+| 9    | cedar    | 0      | 2          | 2      | -23       | 444    | 0.50747  |
 | 10   | poplar   | 0      | 2          | 0      | -52       | 366    | 0.27230  | 
