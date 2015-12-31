@@ -1,8 +1,8 @@
 # ethics-bowl-scoring
 
-`EBScoring.R` is an [R](https://www.r-project.org/about.html) script for computing scores for Ethics Bowls, created for the 7th Annual Long Island High School Ethics Bowl. It implements the scoring criteria in the “2015-16 Rules, Procedures, and Guidelines” available from the [National High School Ethics Bowl  page](http://nhseb.unc.edu/nhseb-rules/).
+`EBScoring.R` is an [R](https://www.r-project.org/about.html) script for computing scores for Ethics Bowls. It implements the scoring criteria in the “2015-16 Rules, Procedures, and Guidelines” available from the [National High School Ethics Bowl  page](http://nhseb.unc.edu/nhseb-rules/).
 
-The ranking script is complete, functional, and commented, however I may add some data-quality checks to it, so that it will produce an error message if, for instance, any spreadsheet cell is blank. And I might clean up a few things. But it works for scoring, and that shouldn't change.
+The ranking script is complete, functional, and commented, however I may add some data-quality checks to it, so that it will produce an error message if, for instance, any spreadsheet cell is blank. But it works for scoring, and that shouldn't change.
 
 The sections below explain how to get data into place for the script to use it, and then briefly what the script does.
 
